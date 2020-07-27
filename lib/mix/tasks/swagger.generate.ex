@@ -37,17 +37,6 @@ defmodule Mix.Tasks.Phx.Swagger.Generate do
       |> Application.get_env(:phoenix_swagger, [])
       |> Keyword.get(:swagger_files, %{})
 
-    if (Enum.empty?(swagger_files) && !Mix.Task.recursing?()) do
-      Logger.warn("""
-        No swagger configuration found. Ensure phoenix_swagger is configured, eg:
-
-        config #{inspect(app_name())}, :phoenix_swagger,
-          swagger_files: %{
-            ...
-          }
-        """)
-    end
-
     Enum.each(swagger_files, fn {output_file, config} ->
       result =
         with {:ok, router} <- attempt_load(config[:router]),
